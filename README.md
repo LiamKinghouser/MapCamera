@@ -1,1 +1,1 @@
-# Map-Camera
+# MapCamera
