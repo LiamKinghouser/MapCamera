@@ -24,6 +24,7 @@ public class MapCamera extends JavaPlugin {
    private ArrayList<ItemStack> cameras;
 
    public void onEnable() {
+      // If server is running in headless environment, send warning in console and disable plugin
       if (GraphicsEnvironment.isHeadless()) {
          Bukkit.getServer().getConsoleSender().sendMessage("-------------------------------------------------------------------------------------------");
          Bukkit.getServer().getConsoleSender().sendMessage("Server is running in a headless environment!");
@@ -34,6 +35,7 @@ public class MapCamera extends JavaPlugin {
          Bukkit.getServer().getConsoleSender().sendMessage("-------------------------------------------------------------------------------------------");
          this.getServer().getPluginManager().disablePlugin(this);
       } else {
+         // Initialize cameras and schedule task to update cameras that players are holding
          this.cameras = new ArrayList();
          Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             Iterator var1 = Bukkit.getOnlinePlayers().iterator();
@@ -53,6 +55,7 @@ public class MapCamera extends JavaPlugin {
       }
    }
 
+   // Register mapcamera command to allow players to give themselves a map camera
    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
       if (args.length == 0 && (label.equalsIgnoreCase("mapcamera") || label.equalsIgnoreCase("mapcamera:mapcamera"))) {
          if (sender instanceof Player) {
@@ -69,6 +72,7 @@ public class MapCamera extends JavaPlugin {
       return true;
    }
 
+   // Give the player a map camera and add it to list of cameras
    private void giveCamera(Player player) {
       ItemStack camera = new ItemStack(Material.FILLED_MAP);
       this.cameras.add(camera);
@@ -88,6 +92,7 @@ public class MapCamera extends JavaPlugin {
 
    }
 
+   // Check if player has space in their inventory for a map camera
    private boolean inventoryIsFull(Player player) {
       int count = 0;
 
@@ -100,6 +105,7 @@ public class MapCamera extends JavaPlugin {
       return count == 36;
    }
 
+   // Add the updated image to the map camera
    private void updateCamera(ItemStack camera) {
       MapMeta cameraMeta = (MapMeta)camera.getItemMeta();
       MapView view = cameraMeta.getMapView();
