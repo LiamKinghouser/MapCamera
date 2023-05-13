@@ -7,6 +7,8 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 
 public class Screenshot {
+   
+   // Take a screenshot of the entire screen and return it as a BufferedImage
    public static BufferedImage takeScreenshot() {
       Robot robot = null;
 
